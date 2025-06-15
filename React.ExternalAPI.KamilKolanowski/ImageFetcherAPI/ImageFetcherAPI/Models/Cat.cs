@@ -4,6 +4,7 @@ namespace ImageFetcherAPI.Models;
 
 public class Cat
 {
+    [Key]
     [Required]
     public string RowId { get; set; } = Guid.NewGuid().ToString();
     [Required]

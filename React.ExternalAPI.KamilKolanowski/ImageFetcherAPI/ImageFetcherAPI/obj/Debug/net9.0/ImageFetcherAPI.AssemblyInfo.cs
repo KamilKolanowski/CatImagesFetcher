@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImageFetcherAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d98443c5621997c336e5d6d3b5705ecf4ea8d945")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11dec39e49c153dbf3f82dc85db882b814c6d338")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImageFetcherAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImageFetcherAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
