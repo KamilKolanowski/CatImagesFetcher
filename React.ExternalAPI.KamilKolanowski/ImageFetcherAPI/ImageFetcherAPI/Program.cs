@@ -1,4 +1,6 @@
 using ImageFetcherAPI.Data;
+using ImageFetcherAPI.Repositories;
+using ImageFetcherAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImageFetcherAPI;
@@ -15,14 +17,10 @@ public class Program
             options.UseSqlite(connectionString));
 
         builder.Services.AddControllers();
-        
+        builder.Services.AddScoped<ICatsRepository, CatsRepository>();
+        builder.Services.AddScoped<ICatsApi, CatsApi>();
         var app = builder.Build();
         
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
-
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
