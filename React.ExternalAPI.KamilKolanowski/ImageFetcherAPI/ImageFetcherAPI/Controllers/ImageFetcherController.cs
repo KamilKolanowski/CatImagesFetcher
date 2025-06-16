@@ -9,13 +9,11 @@ namespace ImageFetcherAPI.Controllers;
 [Route("api")]
 public class ImageFetcherController : ControllerBase
 {
-    private readonly ILogger<ImageFetcherController> _logger;
     private readonly CatSyncService _catSyncService;
     private readonly ICatsRepository _repository;
 
-    public ImageFetcherController(ILogger<ImageFetcherController> logger, CatSyncService catSyncService, ICatsRepository repository)
+    public ImageFetcherController(CatSyncService catSyncService, ICatsRepository repository)
     {
-        _logger = logger;
         _repository = repository;
         _catSyncService = catSyncService;
     }
