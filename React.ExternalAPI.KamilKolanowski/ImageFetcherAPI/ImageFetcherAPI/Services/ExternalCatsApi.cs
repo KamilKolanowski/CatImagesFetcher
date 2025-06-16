@@ -11,10 +11,7 @@ public class ExternalCatsApi
     public ExternalCatsApi(IOptions<ApiSettings> options)
     {
         var settings = options.Value;
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri(settings.BaseUrl)
-        };
+        _httpClient = new HttpClient { BaseAddress = new Uri(settings.BaseUrl) };
 
         _httpClient.DefaultRequestHeaders.Add("x-api-key", settings.ApiKey);
     }

@@ -13,9 +13,9 @@ public class CatsRepository : ICatsRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Cat>> GetAllCatsAsync()
+    public async Task<IEnumerable<Cat>> GetCatsAsync(int limit)
     {
-        return await _context.Cats.ToListAsync();
+        return await _context.Cats.Take(limit).ToListAsync();
     }
 
     public async Task<Cat?> GetCatByIdAsync(string id)

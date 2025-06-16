@@ -10,8 +10,7 @@ namespace ImageFetcherAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "TCSA");
+            migrationBuilder.EnsureSchema(name: "TCSA");
 
             migrationBuilder.CreateTable(
                 name: "Cats",
@@ -24,20 +23,19 @@ namespace ImageFetcherAPI.Migrations
                     Url = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Width = table.Column<int>(type: "INTEGER", maxLength: 6, nullable: false),
                     Height = table.Column<int>(type: "INTEGER", maxLength: 6, nullable: false),
-                    Breeds = table.Column<string>(type: "TEXT", nullable: true)
+                    Breeds = table.Column<string>(type: "TEXT", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cats", x => x.RowId);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Cats",
-                schema: "TCSA");
+            migrationBuilder.DropTable(name: "Cats", schema: "TCSA");
         }
     }
 }

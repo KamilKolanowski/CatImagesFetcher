@@ -1,5 +1,4 @@
 using ImageFetcherAPI.Models;
-using ImageFetcherAPI.Repositories;
 using ImageFetcherAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +9,11 @@ namespace ImageFetcherAPI.Controllers;
 public class ImageFetcherController : ControllerBase
 {
     private readonly CatSyncService _catSyncService;
-    private readonly ICatsRepository _repository;
+    private readonly ICatsApi _catsApi;
 
-    public ImageFetcherController(CatSyncService catSyncService, ICatsRepository repository)
+    public ImageFetcherController(CatSyncService catSyncService, ICatsApi catsApi)
     {
-        _repository = repository;
+        _catsApi = catsApi;
         _catSyncService = catSyncService;
     }
 
@@ -26,9 +25,19 @@ public class ImageFetcherController : ControllerBase
     }
 
     [HttpGet("cats")]
-    public async Task<ActionResult<IEnumerable<Cat>>> GetCats()
+    public async Task<ActionResult<IEnumerable<Cat>>> GetCats([FromQuery] int? limit)
     {
-        var cats = await _repository.GetAllCatsAsync();
+        if (limit.HasValue)
+        {
+            var allCats = await _catsApi.GetAllCatsAsync();
+            var randomCats = allCats
+                .OrderBy(_ => Guid.NewGuid())
+                .Take(limit.Value)
+                .ToList();
+
+            return Ok(randomCats);
+        }
+        var cats = await _catsApi.GetAllCatsAsync();
         return Ok(cats);
     }
 }

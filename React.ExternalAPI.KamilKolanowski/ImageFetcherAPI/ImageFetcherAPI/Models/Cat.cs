@@ -12,11 +12,11 @@ public class Cat
     [Required]
     [StringLength(30)]
     public string Id { get; set; } = String.Empty;
-    
+
     [Required]
     [StringLength(100)]
     public string Name { get; set; } = String.Empty;
-    
+
     [Required]
     [StringLength(100)]
     public string Url { get; set; } = String.Empty;
@@ -26,6 +26,6 @@ public class Cat
 
     [StringLength(6)]
     public int Height { get; set; }
-    
+
     public string[]? Breeds { get; init; }
 }

@@ -12,11 +12,24 @@ public class CatsApi : ICatsApi
         _repository = repository;
     }
 
+    public async Task<IEnumerable<Cat>?> GetCatsAsync(int limit)
+    {
+        try
+        {
+            var cats = await _repository.GetCatsAsync(limit);
+            return cats?.Take(limit);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error retrieving all cats.", ex);
+        }
+    }
+    
     public async Task<IEnumerable<Cat>?> GetAllCatsAsync()
     {
         try
         {
-            return await _repository.GetAllCatsAsync();
+            return await _repository.GetCatsAsync(int.MaxValue);
         }
         catch (Exception ex)
         {

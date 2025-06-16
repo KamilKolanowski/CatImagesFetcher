@@ -3,7 +3,6 @@ using ImageFetcherAPI.Models;
 using ImageFetcherAPI.Repositories;
 using ImageFetcherAPI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace ImageFetcherAPI;
@@ -14,22 +13,30 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
- 
+
         builder.Services.AddDbContext<ImageFetcherDbContext>(options =>
             options.UseSqlite(connectionString)
         );
-        
+
         builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
         builder.Configuration.AddUserSecrets<Program>();
-        
+
         builder.Services.AddSingleton(resolver =>
-            resolver.GetRequiredService<IOptions<ApiSettings>>().Value);
+            resolver.GetRequiredService<IOptions<ApiSettings>>().Value
+        );
 
         builder.Services.AddControllers();
         builder.Services.AddScoped<ICatsRepository, CatsRepository>();
         builder.Services.AddScoped<ICatsApi, CatsApi>();
         builder.Services.AddScoped<CatSyncService>();
         builder.Services.AddScoped<ExternalCatsApi>();
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+            });
+        });
 
         var app = builder.Build();
 
@@ -38,7 +45,7 @@ public class Program
             var db = scope.ServiceProvider.GetRequiredService<ImageFetcherDbContext>();
             db.Database.EnsureCreated();
         }
-        
+
         using (var scope = app.Services.CreateScope())
         {
             var syncService = scope.ServiceProvider.GetRequiredService<CatSyncService>();
@@ -46,6 +53,7 @@ public class Program
         }
 
         app.UseRouting();
+        app.UseCors();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
