@@ -14,7 +14,7 @@ public class ImageFetcherDbContext : DbContext
     {
         modelBuilder.HasDefaultSchema("TCSA");
         base.OnModelCreating(modelBuilder);
-        
+
         modelBuilder.Entity<Cat>(entity =>
         {
             entity.HasKey(e => e.RowId);

@@ -4,7 +4,7 @@ namespace ImageFetcherAPI.Services;
 
 public interface ICatsApi
 {
-    Task<IEnumerable<Cat>> GetAllCatsAsync();
+    Task<IEnumerable<Cat>?> GetAllCatsAsync();
     Task<Cat?> GetCatAsync(string id);
     Task CreateCatAsync(Cat cat);
     Task UpdateCatAsync(Cat cat);

@@ -12,28 +12,79 @@ public class CatsApi : ICatsApi
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Cat>> GetAllCatsAsync()
+    public async Task<IEnumerable<Cat>?> GetAllCatsAsync()
     {
-        return await _repository.GetAllCatsAsync();
+        try
+        {
+            return await _repository.GetAllCatsAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error retrieving all cats.", ex);
+        }
     }
 
     public async Task<Cat?> GetCatAsync(string id)
     {
-        return await _repository.GetCatByIdAsync(id);
+        try
+        {
+            return await _repository.GetCatByIdAsync(id);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            throw new ApplicationException($"Cat with Id '{id}' not found.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error retrieving cat.", ex);
+        }
     }
 
     public async Task CreateCatAsync(Cat cat)
     {
-        await _repository.AddCatAsync(cat);
+        try
+        {
+            await _repository.AddCatAsync(cat);
+        }
+        catch (ArgumentException ex)
+        {
+            throw new ApplicationException("Invalid cat data provided.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error creating cat.", ex);
+        }
     }
 
     public async Task UpdateCatAsync(Cat cat)
     {
-        await _repository.UpdateCatAsync(cat);
+        try
+        {
+            await _repository.UpdateCatAsync(cat);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            throw new ApplicationException("Cat to update not found.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error updating cat.", ex);
+        }
     }
 
     public async Task DeleteCatAsync(string id)
     {
-        await _repository.DeleteCatAsync(id);
+        try
+        {
+            await _repository.DeleteCatAsync(id);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            throw new ApplicationException($"Cat with Id '{id}' not found for deletion.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error deleting cat.", ex);
+        }
     }
 }

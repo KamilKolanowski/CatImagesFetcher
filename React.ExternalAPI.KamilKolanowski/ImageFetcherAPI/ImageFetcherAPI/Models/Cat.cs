@@ -15,12 +15,17 @@ public class Cat
     
     [Required]
     [StringLength(100)]
+    public string Name { get; set; } = String.Empty;
+    
+    [Required]
+    [StringLength(100)]
     public string Url { get; set; } = String.Empty;
-    
+
     [StringLength(6)]
-    public string? Width { get; set; }
-    
+    public int Width { get; set; }
+
     [StringLength(6)]
-    public string? Height { get; set; }
+    public int Height { get; set; }
+    
     public string[]? Breeds { get; init; }
 }

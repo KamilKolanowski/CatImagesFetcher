@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageFetcherAPI.Migrations
 {
     [DbContext(typeof(ImageFetcherDbContext))]
-    [Migration("20250616111739_DataTypesadd")]
-    partial class DataTypesadd
+    [Migration("20250616214009_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,13 +30,18 @@ namespace ImageFetcherAPI.Migrations
                     b.PrimitiveCollection<string>("Breeds")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Height")
+                    b.Property<int>("Height")
                         .HasMaxLength(6)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Id")
                         .IsRequired()
                         .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
@@ -44,9 +49,9 @@ namespace ImageFetcherAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Width")
+                    b.Property<int>("Width")
                         .HasMaxLength(6)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("RowId");
 

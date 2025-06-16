@@ -26,6 +26,12 @@ const catImagesUrls = catImages.map(catImages =>
     </div>
 )
 
+function Header() {
+    return (
+        <h1 className="header">Welcome to the world of Cats!</h1>
+    )
+}
+
 function Footer() {
     return (
         <div className="footer">
@@ -37,6 +43,7 @@ function Footer() {
 export default function App() {
     return (
         <div className="App">
+            <Header />
             <div className="Gallery">
                 {catImagesUrls}
             </div>
