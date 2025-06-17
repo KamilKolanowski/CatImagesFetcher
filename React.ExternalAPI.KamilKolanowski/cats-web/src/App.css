@@ -55,26 +55,19 @@ body {
   justify-content: center;
 }
 
-.catImageWrapper a {
-  display: block;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.catImageWrapper a:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px 4px #1DCD9F;
-  cursor: pointer;
-}
-
 .catImg {
   width: 15rem;
   height: 15rem;
   object-fit: cover;
   display: block;
   border-radius: 8px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.catImg:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px 4px #1DCD9F;
 }
 
 .footer {
@@ -112,3 +105,78 @@ body {
   background-color: #148A70;
   box-shadow: 0 0 6px 2px #148A70cc;
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+.modal-img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  animation: zoomIn 0.3s ease;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background-color: #169976;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 10000;
+  transition: background-color 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px #1DCD9F66;
+}
+
+.nav:hover {
+  background-color: #1DCD9F;
+  box-shadow: 0 0 16px 4px #1DCD9Fcc, 0 0 24px 6px #16B089aa;
+}
+
+.nav:active {
+  background-color: #148A70;
+  box-shadow: 0 0 6px 2px #148A70cc;
+}
+
+.nav.left {
+  left: 2rem;
+}
+
+.nav.right {
+  right: 2rem;
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+

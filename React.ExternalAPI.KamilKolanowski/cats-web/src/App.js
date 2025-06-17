@@ -20,7 +20,7 @@ function useCatImages(limit = 16, reload = 0) {
     return catImages;
 }
 
-function CatGallery({ limit = 16 }) {
+function CatGallery({ limit = 16, onImageClick }) {
     const [reload, setReload] = useState(0);
     const catImages = useCatImages(limit, reload);
 
@@ -28,17 +28,14 @@ function CatGallery({ limit = 16 }) {
         <>
             <button className="button" onClick={() => setReload(prev => prev + 1)}>Refresh Cats</button>
             <div className="Gallery">
-                {catImages.map(catImage =>
+                {catImages.map((catImage, index) =>
                     <div className="catImageWrapper" key={catImage.id}>
-                        <a href={catImage.url} target="_blank" rel="noopener noreferrer">
-                            <img
-                                className="catImg"
-                                src={catImage.url}
-                                alt={catImage.id}
-                                width={catImage.width}
-                                height={catImage.height}
-                            />
-                        </a>
+                        <img
+                            className="catImg"
+                            src={catImage.url}
+                            alt={catImage.id}
+                            onClick={() => onImageClick(index, catImages)}
+                        />
                     </div>
                 )}
             </div>
@@ -60,12 +57,33 @@ function Footer() {
     );
 }
 
+
 export default function App() {
     const LIMIT = 16;
+    const [images, setImages] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(null);
+
+    const handleImageClick = (index, imageList) => {
+        setImages(imageList);
+        setCurrentIndex(index);
+    };
+
+    const closeModal = () => setCurrentIndex(null);
+    const showPrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    const showNext = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+
+
     return (
         <div className="App">
             <Header />
-            <CatGallery limit={LIMIT} />
+            <CatGallery limit={LIMIT} onImageClick={handleImageClick} />
+            {currentIndex !== null && (
+                <div className="modal" onClick={closeModal}>
+                    <button className="nav left" onClick={(e) => { e.stopPropagation(); showPrev(); }}>&larr;</button>
+                    <img className="modal-img" src={images[currentIndex].url} alt="Full size" onClick={(e) => e.stopPropagation()} />
+                    <button className="nav right" onClick={(e) => { e.stopPropagation(); showNext(); }}>&rarr;</button>
+                </div>
+            )}
             <Footer />
         </div>
     );
