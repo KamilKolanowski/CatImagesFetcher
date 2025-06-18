@@ -23,21 +23,41 @@ function useCatImages(limit = 16, reload = 0) {
 function CatGallery({ limit = 16, onImageClick }) {
     const [reload, setReload] = useState(0);
     const catImages = useCatImages(limit, reload);
+    const [imagesLoaded, setImagesLoaded] = useState(0);
+
+    useEffect(() => {
+        if (catImages.length > 0) {
+            setImagesLoaded(0);
+        }
+    }, [catImages]);
+
+    const handleImageLoad = () => {
+        setImagesLoaded(prev => prev + 1);
+    };
+
+    const allLoaded = catImages.length > 0 && imagesLoaded >= catImages.length;
 
     return (
         <>
             <button className="button" onClick={() => setReload(prev => prev + 1)}>Refresh Cats</button>
+            {!allLoaded && <div className="loader"></div>}
             <div className="Gallery">
-                {catImages.map((catImage, index) =>
-                    <div className="catImageWrapper" key={catImage.id}>
-                        <img
-                            className="catImg"
-                            src={catImage.url}
-                            alt={catImage.id}
-                            onClick={() => onImageClick(index, catImages)}
-                        />
-                    </div>
-                )}
+                {catImages.map((catImage, index) => {
+                    const bustSrc = `${catImage.url}?t=${reload}`;
+                    return (
+                        <div className="catImageWrapper" key={catImage.id}>
+                            <img
+                                className="catImg"
+                                src={bustSrc}
+                                alt={catImage.id}
+                                onClick={() => onImageClick(index, catImages)}
+                                onLoad={handleImageLoad}
+                                onError={handleImageLoad}
+                                style={{ display: allLoaded ? 'block' : 'none' }}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </>
     );
@@ -56,7 +76,6 @@ function Footer() {
         </div>
     );
 }
-
 
 export default function App() {
     const LIMIT = 16;
