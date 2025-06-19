@@ -23,37 +23,44 @@ function useCatImages(limit = 16, reload = 0) {
 function CatGallery({ limit = 16, onImageClick }) {
     const [reload, setReload] = useState(0);
     const catImages = useCatImages(limit, reload);
-    const [imagesLoaded, setImagesLoaded] = useState(0);
+    const [loadedUrls, setLoadedUrls] = useState(new Set());
+    const [timeoutExpired, setTimeoutExpired] = useState(false);
+    const [loadedIds, setLoadedIds] = useState(new Set());
 
     useEffect(() => {
-        if (catImages.length > 0) {
-            setImagesLoaded(0);
-        }
+        setLoadedUrls(new Set());
+        setTimeoutExpired(false);
+
+        const timer = setTimeout(() => setTimeoutExpired(true), 10000);
+        return () => clearTimeout(timer);
     }, [catImages]);
 
-    const handleImageLoad = () => {
-        setImagesLoaded(prev => prev + 1);
+    const handleImageLoad = (id) => {
+        setLoadedIds(prev => new Set([...prev, id]));
     };
 
-    const allLoaded = catImages.length > 0 && imagesLoaded >= catImages.length;
+    const allLoaded = catImages.length > 0 && loadedUrls.size >= catImages.length;
+
+    useEffect(() => {
+        console.log('Loaded images:', loadedUrls.size, '/', catImages.length);
+    }, [loadedUrls, catImages]);
 
     return (
         <>
             <button className="button" onClick={() => setReload(prev => prev + 1)}>Refresh Cats</button>
-            {!allLoaded && <div className="loader"></div>}
+            {(!allLoaded && !timeoutExpired) && <div className="loader"></div>}
             <div className="Gallery">
                 {catImages.map((catImage, index) => {
-                    const bustSrc = `${catImage.url}?t=${reload}`;
                     return (
-                        <div className="catImageWrapper" key={catImage.id}>
+                        <div className="catImageWrapper" key={catImage.url}>
                             <img
                                 className="catImg"
-                                src={bustSrc}
-                                alt={catImage.id}
+                                src={`${catImage.url}?t=${reload}`}
+                                alt={`Cat ${index}`}
                                 onClick={() => onImageClick(index, catImages)}
-                                onLoad={handleImageLoad}
-                                onError={handleImageLoad}
-                                style={{ display: allLoaded ? 'block' : 'none' }}
+                                onLoad={() => handleImageLoad(catImage.url)}
+                                onError={() => handleImageLoad(catImage.url)}
+                                style={{ display: 'block' }}
                             />
                         </div>
                     );
@@ -62,6 +69,7 @@ function CatGallery({ limit = 16, onImageClick }) {
         </>
     );
 }
+
 
 function Header() {
     return (
@@ -90,7 +98,6 @@ export default function App() {
     const closeModal = () => setCurrentIndex(null);
     const showPrev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
     const showNext = () => setCurrentIndex((prev) => (prev + 1) % images.length);
-
 
     return (
         <div className="App">
