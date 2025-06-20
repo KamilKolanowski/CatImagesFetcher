@@ -3,13 +3,13 @@
 This project is a full-stack application built with React (frontend) and C# with ASP.NET Core (backend). It integrates with the [Cat API](https://thecatapi.com/) to retrieve random cat images, stores the image URLs in a SQLite database using Entity Framework Core (EF Core), and displays the images in a user-friendly gallery.
 
 ## API Not Running
-![API Not running yet](https://s3.ezgif.com/tmp/ezgif-3b6459680fe303.gif)
+![API Not running yet](./React.ExternalAPI.KamilKolanowski/assets/api_not_running.gif)
 
 ## API Running
-![API Running](https://s3.ezgif.com/tmp/ezgif-3739364eee32c1.gif)
+![API Running](React.ExternalAPI.KamilKolanowski/assets/api_running.gif)
 
 ## Cats Gallery
-![Gallery](https://s3.ezgif.com/tmp/ezgif-3f4db9fca27bc1.gif)
+![Gallery](./React.ExternalAPI.KamilKolanowski/assets/gallery.gif)
 
 
 ## Features
