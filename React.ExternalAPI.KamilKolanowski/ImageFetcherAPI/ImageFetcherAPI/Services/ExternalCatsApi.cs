@@ -5,7 +5,6 @@ namespace ImageFetcherAPI.Services;
 
 public class ExternalCatsApi
 {
-    private readonly string _baseUrlWithKey;
     private readonly HttpClient _httpClient;
 
     public ExternalCatsApi(IOptions<ApiSettings> options)
@@ -16,13 +15,8 @@ public class ExternalCatsApi
         _httpClient.DefaultRequestHeaders.Add("x-api-key", settings.ApiKey);
     }
 
-    public Task<IEnumerable<Cat>?> GetAllCatsAsync()
+    public async Task<IEnumerable<Cat>?> GetAllCatsAsync()
     {
-        return _httpClient.GetFromJsonAsync<IEnumerable<Cat>>("");
-    }
-
-    public Task<Cat?> GetCatAsync(string id)
-    {
-        return _httpClient.GetFromJsonAsync<Cat>($"{_baseUrlWithKey}/{id}");
+        return await _httpClient.GetFromJsonAsync<IEnumerable<Cat>>("images/search?limit=100");
     }
 }

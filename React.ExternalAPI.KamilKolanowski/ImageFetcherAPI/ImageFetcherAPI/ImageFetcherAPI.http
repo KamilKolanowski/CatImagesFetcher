@@ -1,6 +1,0 @@
-
-GET {{ImageFetcherAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-https://localhost:5001/api/cats/sync

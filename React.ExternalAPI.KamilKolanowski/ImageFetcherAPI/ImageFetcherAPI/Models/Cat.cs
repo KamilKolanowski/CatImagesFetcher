@@ -26,6 +26,4 @@ public class Cat
 
     [StringLength(6)]
     public int Height { get; set; }
-
-    public string[]? Breeds { get; init; }
 }

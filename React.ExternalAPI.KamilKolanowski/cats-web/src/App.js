@@ -3,25 +3,30 @@ import './App.css';
 
 function useCatImages(limit = 16, reload = 0) {
     const [catImages, setCatImages] = useState([]);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         async function fetchCats() {
             try {
+                setError(false);
                 const resp = await fetch(`http://localhost:5220/api/cats?limit=${limit}`);
+                if (!resp.ok) throw new Error('Failed to fetch');
                 const data = await resp.json();
                 setCatImages(data);
             } catch {
                 setCatImages([]);
+                setError(true);
             }
         }
         fetchCats();
     }, [limit, reload]);
-    return catImages;
+
+    return { catImages, error };
 }
 
 function CatGallery({ limit = 16, onImageClick }) {
     const [reload, setReload] = useState(0);
-    const catImages = useCatImages(limit, reload);
+    const { catImages, error } = useCatImages(limit, reload);
     const [loadedIds, setLoadedIds] = useState(new Set());
     const [timeoutExpired, setTimeoutExpired] = useState(false);
 
@@ -44,29 +49,35 @@ function CatGallery({ limit = 16, onImageClick }) {
     }, [loadedIds, catImages]);
 
     return (
-        <>
+        <div className="gallery-container">
             <button className="button" onClick={() => setReload(prev => prev + 1)}>Refresh Cats</button>
             <div className="spinner-container">
                 {(!allLoaded && !timeoutExpired && catImages.length > 0) && <div className="loader"></div>}
             </div>
-            <div className="Gallery">
-                {catImages.map((catImage, index) => {
-                    return (
-                        <div className="catImageWrapper" key={catImage.url}>
-                            <img
-                                className="catImg"
-                                src={`${catImage.url}?t=${reload}`}
-                                alt={`Cat ${index}`}
-                                onClick={() => onImageClick(index, catImages)}
-                                onLoad={() => handleImageLoad(catImage.url)}
-                                onError={() => handleImageLoad(catImage.url)}
-                                style={{ display: 'block' }}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
-        </>
+            {error ? (
+                <div className="Gallery">
+                    <h1 className="error-message">Failed to fetch cat images from API</h1>
+                </div>
+            ) : (
+                <div className="Gallery">
+                    {catImages.map((catImage, index) => {
+                        return (
+                            <div className="catImageWrapper" key={catImage.url}>
+                                <img
+                                    className="catImg"
+                                    src={`${catImage.url}?t=${reload}`}
+                                    alt={`Cat ${index}`}
+                                    onClick={() => onImageClick(index, catImages)}
+                                    onLoad={() => handleImageLoad(catImage.url)}
+                                    onError={() => handleImageLoad(catImage.url)}
+                                    style={{ display: 'block' }}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
     );
 }
 

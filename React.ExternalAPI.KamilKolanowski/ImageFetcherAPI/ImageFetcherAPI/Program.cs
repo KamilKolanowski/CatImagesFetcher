@@ -17,13 +17,13 @@ public class Program
         builder.Services.AddDbContext<ImageFetcherDbContext>(options =>
             options.UseSqlite(connectionString)
         );
-
-        builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+        
         builder.Configuration.AddUserSecrets<Program>();
+        builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 
-        builder.Services.AddSingleton(resolver =>
-            resolver.GetRequiredService<IOptions<ApiSettings>>().Value
-        );
+        // builder.Services.AddSingleton(resolver =>
+        //     resolver.GetRequiredService<IOptions<ApiSettings>>().Value
+        // );
 
         builder.Services.AddControllers();
         builder.Services.AddScoped<ICatsRepository, CatsRepository>();
