@@ -63,7 +63,7 @@ SQLite Database (via EF Core)
                     "BaseUrl": "https://api.thecatapi.com/v1/"
                 }
             }
-            ```.
+            ```
 
 3. **Apply EF Core Migrations**
 
