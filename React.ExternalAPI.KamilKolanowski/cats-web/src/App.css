@@ -41,13 +41,6 @@ body {
   box-sizing: border-box;
 }
 
-.catImg {
-  width: 15rem;
-  height: 15rem;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
 .catImageWrapper {
   flex: 1 0 calc(25% - 16px);
   box-sizing: border-box;
@@ -56,8 +49,8 @@ body {
 }
 
 .catImg {
-  width: 15rem;
-  height: 15rem;
+  width: 14rem;
+  height: 14rem;
   object-fit: cover;
   display: block;
   border-radius: 8px;
@@ -175,6 +168,13 @@ body {
   height: 32px;
   animation: spin 1s linear infinite;
   margin: 1rem auto;
+}
+
+.spinner-container {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes spin {

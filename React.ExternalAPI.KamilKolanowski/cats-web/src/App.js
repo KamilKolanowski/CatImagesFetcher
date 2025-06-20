@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { useState, useEffect } from 'react';
 
 function useCatImages(limit = 16, reload = 0) {
     const [catImages, setCatImages] = useState([]);
@@ -17,18 +17,16 @@ function useCatImages(limit = 16, reload = 0) {
         fetchCats();
     }, [limit, reload]);
     return catImages;
-
 }
 
 function CatGallery({ limit = 16, onImageClick }) {
     const [reload, setReload] = useState(0);
     const catImages = useCatImages(limit, reload);
-    const [loadedUrls, setLoadedUrls] = useState(new Set());
-    const [timeoutExpired, setTimeoutExpired] = useState(false);
     const [loadedIds, setLoadedIds] = useState(new Set());
+    const [timeoutExpired, setTimeoutExpired] = useState(false);
 
     useEffect(() => {
-        setLoadedUrls(new Set());
+        setLoadedIds(new Set());
         setTimeoutExpired(false);
 
         const timer = setTimeout(() => setTimeoutExpired(true), 10000);
@@ -39,16 +37,18 @@ function CatGallery({ limit = 16, onImageClick }) {
         setLoadedIds(prev => new Set([...prev, id]));
     };
 
-    const allLoaded = catImages.length > 0 && loadedUrls.size >= catImages.length;
+    const allLoaded = catImages.length > 0 && loadedIds.size >= catImages.length;
 
     useEffect(() => {
-        console.log('Loaded images:', loadedUrls.size, '/', catImages.length);
-    }, [loadedUrls, catImages]);
+        console.log('Loaded images:', loadedIds.size, '/', catImages.length);
+    }, [loadedIds, catImages]);
 
     return (
         <>
             <button className="button" onClick={() => setReload(prev => prev + 1)}>Refresh Cats</button>
-            {(!allLoaded && !timeoutExpired) && <div className="loader"></div>}
+            <div className="spinner-container">
+                {(!allLoaded && !timeoutExpired && catImages.length > 0) && <div className="loader"></div>}
+            </div>
             <div className="Gallery">
                 {catImages.map((catImage, index) => {
                     return (
@@ -70,11 +70,10 @@ function CatGallery({ limit = 16, onImageClick }) {
     );
 }
 
-
 function Header() {
     return (
         <h1 className="header">Welcome to the world of Cats!</h1>
-    )
+    );
 }
 
 function Footer() {
