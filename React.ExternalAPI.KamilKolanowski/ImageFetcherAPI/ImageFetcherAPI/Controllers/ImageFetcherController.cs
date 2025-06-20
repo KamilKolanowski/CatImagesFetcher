@@ -23,14 +23,14 @@ public class ImageFetcherController : ControllerBase
         await _catSyncService.SyncCatsAsync();
         return Ok("Synced");
     }
-
+    
     [HttpGet("cats")]
     public async Task<ActionResult<IEnumerable<Cat>>> GetCats([FromQuery] int? limit)
     {
         if (limit.HasValue)
         {
             var allCats = await _catsApi.GetAllCatsAsync();
-            var randomCats = allCats
+            var randomCats = allCats?
                 .OrderBy(_ => Guid.NewGuid())
                 .Take(limit.Value)
                 .ToList();

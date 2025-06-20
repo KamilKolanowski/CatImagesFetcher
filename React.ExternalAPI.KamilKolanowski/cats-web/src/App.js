@@ -16,8 +16,8 @@ function useCatImages(limit = 16, reload = 0) {
         }
         fetchCats();
     }, [limit, reload]);
-
     return catImages;
+
 }
 
 function CatGallery({ limit = 16, onImageClick }) {
